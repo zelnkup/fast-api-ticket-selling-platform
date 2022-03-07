@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  web:
+    build:
+      context: .
+      dockerfile: backend.Dockerfile
+    command: bash -c "uvicorn src.main:app --host 0.0.0.0 --reload"
+    depends_on:
+      - db
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+
+  db:
+    image: postgres
+    environment:
+      POSTGRES_HOST: postgres
+      POSTGRES_PORT: 5432
+      POSTGRES_DB: debug
+      POSTGRES_USER: debug
+      POSTGRES_PASSWORD: debug
+    ports:
+      - "54329:5432"
