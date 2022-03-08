@@ -4,3 +4,7 @@ SQLAlchemy
 psycopg2
 alembic
 python-dotenv
+python-jose[cryptography]
+passlib[bcrypt]
+python-multipart
+pydantic[email]
