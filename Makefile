@@ -4,12 +4,6 @@ build:
 run:
 	docker-compose up
 
-shell:
-	docker-compose run --rm web python manage.py shell
-
-bash:
-	docker-compose run --rm web alembic init alembic
-
 migrations:
 	docker-compose run --rm web alembic revision --autogenerate
 

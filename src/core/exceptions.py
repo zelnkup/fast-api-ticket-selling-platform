@@ -9,13 +9,7 @@ class APIException(Exception):
     """
 
     def __init__(
-        self,
-        error_code: int = 000,
-        status_code: int = 500,
-        detail="",
-        message="",
-        *args,
-        **kwargs,
+        self, error_code: int = 000, status_code: int = 500, detail="", message="", *args, **kwargs,
     ):
         Exception.__init__(self, *args, **kwargs)
 
@@ -28,7 +22,7 @@ class APIException(Exception):
         return f"APIException(status_code={self.status_code}, detail={self.message})"
 
 
-async def on_api_exception(request: Request, exception: APIException) -> JSONResponse:
+def on_api_exception(request: Request, exception: APIException) -> JSONResponse:
     content = {"error": {"error_code": exception.error_code}}
 
     if exception.message:

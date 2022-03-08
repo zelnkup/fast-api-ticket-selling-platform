@@ -1,8 +1,29 @@
 from fastapi import FastAPI, Request, Response
+from fastapi.middleware.cors import CORSMiddleware
+from src.api.routes.api import router as api_router
 from src.core.database import SessionLocal
-from src.core.init_app import init_middlewares, register_exceptions, register_routers
+from src.core.exceptions import APIException, on_api_exception
+from src.core.settings import settings
 
-app = FastAPI()
+
+def get_application() -> FastAPI:
+    application = FastAPI()
+
+    application.include_router(api_router, prefix="/api")
+
+    application.add_middleware(
+        CORSMiddleware,
+        allow_origins=settings.CORS_ORIGINS,
+        allow_credentials=settings.CORS_ALLOW_CREDENTIALS,
+        allow_methods=settings.CORS_ALLOW_METHODS,
+        allow_headers=settings.CORS_ALLOW_HEADERS,
+    )
+    application.add_exception_handler(APIException, on_api_exception)
+
+    return application
+
+
+app = get_application()
 
 
 @app.middleware("http")
@@ -14,8 +35,3 @@ async def db_session_middleware(request: Request, call_next):
     finally:
         request.state.db.close()
     return response
-
-
-init_middlewares(app)
-register_exceptions(app)
-register_routers(app)

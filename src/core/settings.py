@@ -7,7 +7,10 @@ class Settings(BaseSettings):
     PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir))
     BASE_DIR = os.path.abspath(os.path.join(PROJECT_ROOT, os.pardir))
 
-    DATABASE_URL: str = "postgresql://debug:debug@db:5432/debug"
+    DATABASE_URL: str
+    SECRET_KEY: str
+    ALGORITHM: str = "HS256"
+    ACCESS_TOKEN_EXPIRE_MINUTES: int = 30
 
     CORS_ORIGINS = [
         "http://localhost",
