@@ -1,6 +1,9 @@
-from src.models.domain.users import User
+from src.core.utils import get_user_model
 from src.models.schemas.users import UserCreate
 from src.repositories.base import BaseRepository
+
+
+User = get_user_model()
 
 
 class UserRepository(BaseRepository):

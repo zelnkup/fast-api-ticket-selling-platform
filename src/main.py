@@ -7,7 +7,7 @@ from src.core.settings import settings
 
 
 def get_application() -> FastAPI:
-    application = FastAPI()
+    application = FastAPI(title="Tickets selling platform", version="1.0.0")
 
     application.include_router(api_router, prefix="/api")
 

@@ -19,6 +19,8 @@ class Settings(BaseSettings):
     CORS_ALLOW_METHODS = ["*"]
     CORS_ALLOW_HEADERS = ["*"]
 
+    USER_AUTH_MODEL: str = "src.models.domain.users.User"
+
     class Config:
         env_file = ".env"
 

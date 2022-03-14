@@ -5,6 +5,11 @@ from sqlalchemy import engine_from_config, pool
 from src.core.database import Base
 from src.core.settings import settings
 
+# models needed to populate Base.metadata auto migrations
+from src.models.domain.events import Event  # noqa
+from src.models.domain.users import User  # noqa
+
+
 config = context.config
 config.set_main_option("sqlalchemy.url", settings.DATABASE_URL)
 fileConfig(config.config_file_name)

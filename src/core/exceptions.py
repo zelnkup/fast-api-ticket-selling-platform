@@ -1,5 +1,8 @@
+from typing import Any
+
 from fastapi.requests import Request
 from fastapi.responses import JSONResponse
+from starlette.exceptions import HTTPException as StarletteHTTPException
 
 
 class APIException(Exception):
@@ -22,7 +25,7 @@ class APIException(Exception):
         return f"APIException(status_code={self.status_code}, detail={self.message})"
 
 
-def on_api_exception(request: Request, exception: APIException) -> JSONResponse:
+async def on_api_exception(request: Request, exception: APIException) -> JSONResponse:
     content = {"error": {"error_code": exception.error_code}}
 
     if exception.message:
@@ -32,3 +35,12 @@ def on_api_exception(request: Request, exception: APIException) -> JSONResponse:
         content["error"]["detail"] = exception.detail
 
     return JSONResponse(content=content, status_code=exception.status_code)
+
+
+class AuthHTTPException(StarletteHTTPException):
+    status_code = 401
+    detail = "Could not validate credentials"
+    headers = {"WWW-Authenticate": "Bearer"}
+
+    def __init__(self, detail: Any = None,) -> None:
+        super().__init__(status_code=self.status_code, detail=detail or self.detail)
